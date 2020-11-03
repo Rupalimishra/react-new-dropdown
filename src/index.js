@@ -1,11 +1,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './style.css';
 class App extends React.Component {
     constructor() {
       super();
-  
+
+      this.onKeyPressed = this.onKeyPressed.bind(this);
       this.handleClick = this.handleClick.bind(this);
       this.handleOutsideClick = this.handleOutsideClick.bind(this);
   
@@ -48,26 +50,47 @@ class App extends React.Component {
      }));
       this.handleClick();
     }
+  //   handleKeyDown(event) {
+  //     if(event.keyCode === 40) { 
+  //         console.log('Enter key pressed')
+  //   }
+  // }
+  componentWillMount() {
+    document.addEventListener("keydown", this.onKeyPressed.bind(this));
+        }
+
+componentWillUnmount() {
+    document.removeEventListener("keydown", this.onKeyPressed.bind(this));
+     }      
+
+onKeyPressed(e) {
+  console.log(e.keyCode);
+}
+  
+    
 
    
   
     render() {
+     
       return (
         <div className="popover-container" ref={node => { this.node = node; }}>
           <button
             onClick={this.handleClick  }
           >
            {this.state.selectedvalue}
-          
+         
             
           </button>
           {this.state.popupVisible && (
             <div
-              className="popover" 
-            
-              
+              className="popover"  
             >
-                <div tabIndex="-1">
+              
+                <div 
+                onKeyDown={this.onKeyPressed}
+                tabIndex="-1"
+                  >
                <button>Item1</button>
                <button>Item2</button>
                <button>Item3</button>
