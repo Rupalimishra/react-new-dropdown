@@ -102,10 +102,10 @@ class App extends React.Component {
                 <div 
                 tabIndex="-1"
                   >
-               <button>Item1</button>
-               <button>Item2</button>
-               <button>Item3</button>
-               <button>Item4</button>
+               <button>Neptunium</button>
+               <button>Plutonium</button>
+               <button>Americium</button>
+               <button>Berkelium</button>
               </div>
             </div>
            )}
