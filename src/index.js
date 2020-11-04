@@ -4,18 +4,22 @@ import ReactDOM from 'react-dom';
 
 import './style.css';
 class App extends React.Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
-      this.onKeyPressed = this.onKeyPressed.bind(this);
+      this.handleKeyDown = this.handleKeyDown.bind(this)
       this.handleClick = this.handleClick.bind(this);
       this.handleOutsideClick = this.handleOutsideClick.bind(this);
   
       this.state = {
         popupVisible: false,
-       selectedvalue: "dropdown"
+        selectedvalue: "dropdown",
+        cursor: 0,
+        result: [
+        "Item1", "Item2", "Item3", "Item4"
+        ]
 
-      };
+      }
     }
   
     handleClick() {
@@ -50,22 +54,29 @@ class App extends React.Component {
      }));
       this.handleClick();
     }
-  //   handleKeyDown(event) {
-  //     if(event.keyCode === 40) { 
-  //         console.log('Enter key pressed')
-  //   }
-  // }
-  componentWillMount() {
-    document.addEventListener("keydown", this.onKeyPressed.bind(this));
-        }
 
-componentWillUnmount() {
-    document.removeEventListener("keydown", this.onKeyPressed.bind(this));
-     }      
-
-onKeyPressed(e) {
-  console.log(e.keyCode);
-}
+    handleKeyDown(e) {
+      const { cursor, result } = this.state
+     console.log("hii" + this.state.cursor)
+      if (e.keyCode == 38 && cursor >= 0) {
+        this.setState( prevState => ({
+          cursor: this.state.cursor - 1,
+          selectedvalue: result[cursor]
+        }))
+       if (cursor == result.length){
+        this.setState({selectedvalue:"dropdown"})
+       }
+      console.log("if" +this.state.cursor)
+      }  else if (e.keyCode == 40 && cursor < result.length) {
+        this.setState( prevState => ({
+          cursor: this.state.cursor + 1,
+          selectedvalue: result[cursor]
+        }))
+      console.log("elseif" +this.state.cursor)
+      }
+    
+  }
+  
   
     
 
@@ -74,7 +85,7 @@ onKeyPressed(e) {
     render() {
      
       return (
-        <div className="popover-container" ref={node => { this.node = node; }}>
+        <div className="popover-container" ref={node => { this.node = node; } } onKeyDown={this.handleKeyDown }>
           <button
             onClick={this.handleClick  }
           >
@@ -85,10 +96,10 @@ onKeyPressed(e) {
           {this.state.popupVisible && (
             <div
               className="popover"  
+              
             >
               
                 <div 
-                onKeyDown={this.onKeyPressed}
                 tabIndex="-1"
                   >
                <button>Item1</button>
